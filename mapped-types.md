@@ -122,6 +122,28 @@ type B = string & (string | number); // string
 type C = string & "x"; // x
 ```
 
+>[!question]
+> why does the string only index signature type not work?
+> 
+
+```typescript
+
+type OnlyStringIndexes<T> = {
+  [index: string]: T,
+  // number index signature must be a subtype of string index signature
+  // never is a subtype of all types
+  [index: number]: never,
+  [index: symbol]: never,
+}
+
+type Getters<Type extends OnlyStringIndexes<string>> = {
+  [K in keyof Type as `get${Capitalize<K>}`]: () => Type[K]
+};
+
+// type error: string | number | symbol not assignable to string
+// but we've specified that the number and symbol indexed are never???
+```
+
 note:
 The type definition for `Capitilze` uses a keyword `intrinsic`. 
 
