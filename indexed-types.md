@@ -49,3 +49,15 @@ type A = {
   [index: number]: { name: string, age: number }
 }
 ```
+
+tip:
+
+```typescript
+type OnlyStringIndexes<T> = {
+  [index: string]: T,
+  // number index signature must be a subtype of string index signature
+  // never is a subtype of all types
+  [index: number]: never,
+  [index: symbol]: never,
+};
+```
